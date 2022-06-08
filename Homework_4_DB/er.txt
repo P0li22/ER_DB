@@ -1,0 +1,90 @@
+/* Entities */
+entity CINEMA {
+    nome,
+    codice_cinema (id),
+    citta
+}
+entity SALA {
+    codice_sala (external),
+    capacita,
+    accessibile_disabili
+}
+entity FILM {
+    titolo,
+    durata,
+    codice_film (id),
+    anno_uscita,
+    genere (multi)
+}
+entity DIPENDENTE {
+    codice_fiscale (id),
+    cognome,
+    nome,
+    data_assunzione
+}
+entity PERSONALE_BIGLIETTERIA {
+    lingue (multi)
+}
+entity PERSONALE_PROIEZIONE
+entity PROIEZIONE {
+    data (external),
+    ora_inizio (external)
+}
+entity CLIENTE {
+    codice_biglietto (id),
+    posto,
+    nome
+}
+entity PERIODO {
+    data_fine,
+    data_inizio (external)
+}
+entity APERTURA {
+    ora_inizio (external),
+    ora_fine,
+    giorno (external)
+}
+
+/* Relationships */
+relationship DISPONE (
+    CINEMA: one..many,
+    SALA: one..one external
+)
+relationship OSPITA (
+    SALA: zero..many,
+    PROIEZIONE: one..one external
+)
+relationship HA_INTERAGITO (
+    CLIENTE: one..one,
+    PERSONALE_BIGLIETTERIA: zero..many
+)
+relationship GESTISCE (
+    PROIEZIONE: one..many,
+    PERSONALE_PROIEZIONE: zero..many
+)
+relationship DI (
+    FILM: one..many,
+    PROIEZIONE: one..one
+)
+relationship LAVORA (
+    PERIODO: one..one external,
+    DIPENDENTE: one..many
+)
+relationship IN (
+    PERIODO: one..one,
+    CINEMA: one..many
+)
+relationship ASSISTE (
+    CLIENTE: one..one,
+    PROIEZIONE: zero..many
+)
+relationship HA (
+    CINEMA: one..many,
+    APERTURA: one..one external
+)
+
+/* Generalizations */
+DIPENDENTE <= {
+    PERSONALE_BIGLIETTERIA,
+    PERSONALE_PROIEZIONE
+} (partial, exclusive)

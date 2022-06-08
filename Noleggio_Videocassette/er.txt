@@ -1,0 +1,62 @@
+/* Entities */
+entity CENTRO_SERVIZIO {
+    indirizzo,
+    codice_centro (id),
+    telefono
+}
+entity IMPIEGATO {
+    codice_fiscale (id),
+    telefono,
+    nome,
+    titolo_studio (optional, multi)
+}
+entity PERIODO {
+    data_fine,
+    data_inizio (external),
+    ruolo
+}
+entity FILM {
+    regista (id),
+    titolo (id),
+    elenco_attori (multi),
+    costo_noleggio
+}
+entity SETTORE {
+    codice_settore (external)
+}
+entity CENTRO_DI_PRODUZIONE {
+    codice_centro (id),
+    telefono,
+    nome
+}
+
+/* Relationships */
+relationship LAVORA (
+    IMPIEGATO: one..many,
+    PERIODO: one..one external
+)
+relationship IN (
+    PERIODO: one..one,
+    CENTRO_SERVIZIO: one..many
+)
+relationship REMAKE (
+    FILM "remake_di": zero..one,
+    FILM "ha_remake": zero..many
+)
+relationship DISPONE (
+    CENTRO_SERVIZIO: one..many,
+    SETTORE: one..one external
+)
+relationship CONTIENE (
+    SETTORE: zero..many,
+    FILM: one..many
+) {
+    posizione,
+    quantita
+}
+relationship FORNISCE (
+    FILM: one..one,
+    CENTRO_DI_PRODUZIONE: one..many
+) {
+    costo
+}

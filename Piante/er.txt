@@ -1,0 +1,64 @@
+/* Entities */
+entity PIANTA {
+    codice_pianta (id),
+    nome_comune,
+    nome_latino,
+    giardino_o_appartamento,
+    esotica
+}
+entity VERDE
+entity FIORITA {
+    colorazioni (multi)
+}
+entity CLIENTE {
+    codice_cliente (id),
+    nome,
+    indirizzo
+}
+entity PRIVATO {
+    codice_fiscale
+}
+entity RIVENDITA {
+    partita_iva
+}
+entity FORNITORE {
+    nome,
+    codice_fiscale,
+    indirizzo,
+    codice_fornitore (id)
+}
+entity PREZZO {
+    prezzo,
+    data_inizio (external),
+    data_fine
+}
+entity TEMPO {
+    data (id)
+}
+
+/* Relationships */
+relationship RELATIONSHIP32 (
+    FORNITORE: one..many,
+    PIANTA: one..one
+)
+relationship ACQUISTA (
+    CLIENTE: one..many,
+    PIANTA: zero..many,
+    TEMPO: one..many
+) {
+    quantita
+}
+relationship HA (
+    PREZZO: one..one external,
+    PIANTA: one..many
+)
+
+/* Generalizations */
+PIANTA <= {
+    FIORITA,
+    VERDE
+} (total, exclusive)
+CLIENTE <= {
+    RIVENDITA,
+    PRIVATO
+} (total, exclusive)

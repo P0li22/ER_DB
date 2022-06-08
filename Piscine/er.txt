@@ -1,0 +1,79 @@
+/* Entities */
+entity PISCINA {
+    indirizzo,
+    nome (id),
+    nome_responsabile,
+    telefono
+}
+entity VASCA_APERTO {
+    inizio,
+    fine
+}
+entity CORSO {
+    attivita (external),
+    modalita,
+    costo,
+    max_partecipanti,
+    min_partecipanti
+}
+entity LEZIONE {
+    giorno (external),
+    ora
+}
+entity INSEGNANTE {
+    codice_fiscale (id),
+    cellulare (optional),
+    nome,
+    qualifiche (multi)
+}
+entity PERIODO {
+    data_inizio (id)
+}
+entity CLIENTE {
+    codice_fiscale (id),
+    indirizzo,
+    nome,
+    telefono
+}
+entity INGRESSO_SINGOLO
+entity ISCRITTO {
+    eta,
+    medico,
+    data_certificato
+}
+
+/* Relationships */
+relationship ORGANIZZA (
+    PISCINA: zero..many,
+    CORSO: one..one external
+)
+relationship HA (
+    CORSO: one..many,
+    LEZIONE: one..one external
+)
+relationship LAVORA (
+    PERIODO: one..many,
+    INSEGNANTE: one..many,
+    PISCINA: one..many
+) {
+    data_fine
+}
+relationship PARTECIPA (
+    ISCRITTO: one..many,
+    CORSO: zero..many
+)
+relationship ULTIMO_INGRESSO (
+    INGRESSO_SINGOLO: one..one,
+    PISCINA: zero..many
+) {
+    data
+}
+
+/* Generalizations */
+PISCINA <= {
+    VASCA_APERTO
+} (partial, exclusive)
+CLIENTE <= {
+    INGRESSO_SINGOLO,
+    ISCRITTO
+} (total, exclusive)
